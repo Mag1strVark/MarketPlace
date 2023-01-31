@@ -1,0 +1,36 @@
+.item{
+    width: 100%;
+    float: left;
+    margin-bottom: 20px;
+    align-items: center;
+}
+
+.item img{
+    width: 70px;
+    margin-right: 20px;
+    float: left;
+}
+
+.item h2{
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.item p{
+    color: #797979;
+    font-weight: 600;
+}
+
+.trash{
+    color: #ca5252;
+    float: right;
+    position: relative;
+    top: -25px;
+    cursor: pointer;
+    transition: 0.4s;
+}
+
+.trash:hover{
+    color: #dc3d3d;
+    transform: scale(1.5);
+}
