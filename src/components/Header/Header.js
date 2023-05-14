@@ -30,11 +30,6 @@ const Header = (props) => {
             <div className={s.navigation}>
                 <span className={s.logo}>Logo</span>
                 <div className={s.menu}>
-                    <ul className={s.nav}>
-                        <li>Про нас</li>
-                        <li>Контакты</li>
-                        <li>Кабинет</li>
-                    </ul>
                     <FaShoppingBasket onClick={() => setCartOpen(cartOpen = !cartOpen)}
                                       className={cartOpen ? s.cartButtonActive : s.cartButton}/>
                     {cartOpen && (

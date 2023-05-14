@@ -53,14 +53,14 @@
 }
 
 .presentation::before{
-    content: 'Главная';
+    content: 'MarketPlace';
     font-size: 40px;
     font-weight: 600;
     color: white;
 }
 
 .presentation::after{
-    content: 'текст';
+    content: 'Igor Vlasov';
     font-size: 15px;
     font-weight: 300;
     color: white;
