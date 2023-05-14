@@ -3,10 +3,11 @@ import Header from './components/Header/Header';
 import Main from './components/Main/Main';
 import Footer from './components/Footer/Footer';
 import React from 'react';
-import white_room from '../src/assets/img/white_room.jpg';
 import Categories from './components/Main/Categories/Categories';
 import ShowItem from './components/Main/ShowItem/ShowItem';
 import axios from "axios";
+import {toast, ToastContainer} from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 class App extends React.Component {
     constructor(props) {
@@ -43,6 +44,7 @@ class App extends React.Component {
                 <Main onShowItem={this.onShowItem} items={this.state.currentItems} onAdd={this.addToOrder}/>
                 {this.state.showItem && <ShowItem onShowItem={this.onShowItem} item={this.state.fullItem}  onAdd={this.addToOrder}/>}
                 <Footer/>
+                <ToastContainer />
             </div>
         );
     }
@@ -64,6 +66,7 @@ class App extends React.Component {
 
     deleteOrder(id) {
         this.setState({orders: this.state.orders.filter(el => el.id !== id)});
+        toast.success("Order deleted successfully!");
     }
 
     addToOrder(item) {
@@ -72,8 +75,12 @@ class App extends React.Component {
             if (el.id === item.id)
                 isInArray = true;
         });
-        if (!isInArray)
+        if (!isInArray) {
             this.setState({orders: [...this.state.orders, item]});
+            toast.success("Order added successfully!");
+        } else {
+            toast.success("This order is already in the cart!");
+        }
     }
 }
 
