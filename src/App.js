@@ -17,7 +17,9 @@ class App extends React.Component {
             currentItems: [],
             items: null,
             showItem: false,
-            fullItem: {}
+            fullItem: {},
+            searchQuery: "",
+            searchSuggestions: []
         };
         this.addToOrder = this.addToOrder.bind(this);
         this.deleteOrder = this.deleteOrder.bind(this);
@@ -39,10 +41,25 @@ class App extends React.Component {
     render() {
         return (
             <div className={s.wrapper}>
-                <Header orders={this.state.orders} onDelete={this.deleteOrder}/>
+                <Header
+                    orders={this.state.orders}
+                    onDelete={this.deleteOrder}
+                    onSearch={this.handleSearch}
+                    searchQuery={this.state.searchQuery}
+                    searchSuggestions={this.state.searchSuggestions}
+                />
                 <Categories chooseCategory={this.chooseCategory}/>
-                <Main onShowItem={this.onShowItem} items={this.state.currentItems} onAdd={this.addToOrder}/>
-                {this.state.showItem && <ShowItem onShowItem={this.onShowItem} item={this.state.fullItem}  onAdd={this.addToOrder}/>}
+                <Main
+                    onShowItem={this.onShowItem}
+                    items={this.state.currentItems}
+                    onAdd={this.addToOrder}
+                />
+                {this.state.showItem &&
+                    <ShowItem
+                        onShowItem={this.onShowItem}
+                        item={this.state.fullItem}
+                        onAdd={this.addToOrder}
+                    />}
                 <Footer/>
                 <ToastContainer />
             </div>
@@ -82,6 +99,37 @@ class App extends React.Component {
             toast.success("This order is already in the cart!");
         }
     }
+
+    handleSearch = (event) => {
+        const searchQuery = event.target.value;
+        this.setState({ searchQuery }, () => {
+            this.filterItems();
+            this.handleSearchSuggestions(); // Вызов метода handleSearchSuggestions
+        });
+    };
+
+
+    filterItems() {
+        const { items, searchQuery } = this.state;
+        if (searchQuery === "") {
+            this.setState({ currentItems: items });
+            return;
+        }
+
+        const filteredItems = items.filter((item) =>
+            item.title.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+        this.setState({ currentItems: filteredItems });
+    }
+
+    handleSearchSuggestions() {
+        const { items, searchQuery } = this.state;
+        const searchSuggestions = items.filter((item) =>
+            item.title.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+        this.setState({ searchSuggestions });
+    }
+
 }
 
 export default App;

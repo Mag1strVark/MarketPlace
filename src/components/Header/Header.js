@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, {useState} from 'react'
 import s from './Header.module.css'
-import { FaShoppingBasket } from 'react-icons/fa'
+import {FaShoppingBasket} from 'react-icons/fa'
 import Order from './Order/Order'
 
 const showOrders = (props) => {
@@ -14,8 +14,8 @@ const showOrders = (props) => {
     </div>)
 }
 
-const showNothing = () =>{
-    return(
+const showNothing = () => {
+    return (
         <div className={s.empty}>
             <h2>Товаров нет</h2>
         </div>
@@ -28,7 +28,21 @@ const Header = (props) => {
     return (
         <div className={s.container}>
             <div className={s.navigation}>
-                <span className={s.logo}>Logo</span>
+                <span className={s.logo}>MarketPlace</span>
+                <input
+                    type="text"
+                    placeholder="Search items..."
+                    onChange={props.onSearch}
+                    value={props.searchQuery}
+                    className={s.searchInput}
+                />
+                {props.searchSuggestions.length > 0 && (
+                    <ul className={s.suggestions}>
+                        {props.searchSuggestions.map((item) => (
+                            <li key={item.id}>{item.title}</li>
+                        ))}
+                    </ul>
+                )}
                 <div className={s.menu}>
                     <FaShoppingBasket onClick={() => setCartOpen(cartOpen = !cartOpen)}
                                       className={cartOpen ? s.cartButtonActive : s.cartButton}/>
