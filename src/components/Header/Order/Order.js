@@ -6,18 +6,31 @@ class Order extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            count: 0
+            count: 0,
+            summa: this.props.item.price
         };
     }
 
     incrementCount = () => {
-        this.setState({count: this.state.count + 1});
+        const newCount = this.state.count + 1;
+        this.setState({
+            count: newCount,
+            summa: this.props.item.price * newCount
+        });
     }
 
     decrementCount = () => {
         if (this.state.count > 0) {
-            this.setState({count: this.state.count - 1});
+            const newCount = this.state.count - 1;
+            this.setState({
+                count: newCount,
+                summa: this.props.item.price * newCount
+            });
         }
+    }
+
+    handleDelete = () => {
+        this.props.onDelete(this.props.item.id);
     }
 
     render() {

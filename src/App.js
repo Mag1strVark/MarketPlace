@@ -104,7 +104,6 @@ class App extends React.Component {
         });
     }
 
-
     sortItemsByPrice = (direction) => {
         let sortString = direction === "asc" ? "?sort=asc" : "?sort=desc";
         let itemsToSort = this.state.currentItems;
