@@ -115,7 +115,16 @@ class App extends React.Component {
 
     deleteOrder(id) {
         this.setState({orders: this.state.orders.filter(el => el.id !== id)});
-        toast.success("Order deleted successfully!");
+        toast.success('Order deleted successfully!', {
+            position: "top-center",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+        });
     }
 
     addToOrder(item) {
@@ -126,9 +135,27 @@ class App extends React.Component {
         });
         if (!isInArray) {
             this.setState({orders: [...this.state.orders, item]});
-            toast.success("Order added successfully!");
+            toast.success('Order added successfully!', {
+                position: "top-center",
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
         } else {
-            toast.success("This order is already in the cart!");
+            toast.success('This order is already in the cart!', {
+                position: "top-center",
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
         }
     }
 
