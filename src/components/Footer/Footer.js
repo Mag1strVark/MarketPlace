@@ -4,7 +4,7 @@ import s from './Footer.module.css'
 const Footer = () => {
     return (
         <div className={s.container}>
-            <span>Все права защищены &copy;</span>
+            <span>Власов Игорь АТ-01 &copy;</span>
         </div>
     )
 }

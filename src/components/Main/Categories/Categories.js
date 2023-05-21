@@ -31,11 +31,14 @@ class Categories extends Component {
     }
     render() {
         return (
-            <div className={s.categories}>
-                {this.state.categories.map(el => (
-                    <div className={s.categories_items} key={el.key} onClick={() => this.props.chooseCategory(el.key)}>{el.name}</div>
-                ))}
-                <div className={s.categories_items} onClick={this.toggleSortOrder}>Sort {this.state.sortOrder === 'asc' ? '↑' : '↓'}</div>
+            <div className={s.container}>
+                <input type="text" placeholder="Search products" className={s.searchInput} value={this.props.searchTerm} onChange={this.props.onSearchChange} />
+                <div className={s.categories}>
+                    {this.state.categories.map(el => (
+                        <div className={s.categories_items} key={el.key} onClick={() => this.props.chooseCategory(el.key)}>{el.name}</div>
+                    ))}
+                    <div className={s.categories_items} onClick={this.toggleSortOrder}>Sort {this.state.sortOrder === 'asc' ? '↓'  : '↑'}</div>
+                </div>
             </div>
         )
     }

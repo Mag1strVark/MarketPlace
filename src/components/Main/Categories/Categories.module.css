@@ -1,3 +1,12 @@
+.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+}
+
+
 .categories{
     display: flex;
     flex-direction: row;
@@ -19,4 +28,14 @@
 .categories_items:hover{
     border-color: silver;
     transform: scale(1.1);
+}
+
+.searchInput{
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    outline: none;
+    width: 60%;
+    position: relative;
 }

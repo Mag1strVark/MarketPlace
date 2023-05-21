@@ -18,6 +18,7 @@ class App extends React.Component {
             items: null,
             showItem: false,
             fullItem: {},
+            currentCategory: null,
             searchTerm: ''
         };
         this.addToOrder = this.addToOrder.bind(this);
@@ -50,13 +51,12 @@ class App extends React.Component {
                     chooseCategory={this.chooseCategory}
                     sortItemsByPrice={this.sortItemsByPrice}
                     onShowItem={this.onShowItem}
+                    onSearchChange={this.onSearchChange}
+                    searchTerm={this.state.searchTerm}
                 />
                 <Main
                     onShowItem={this.onShowItem}
-                    items={this.state.currentItems.filter(item =>
-                        item.title.toLowerCase().includes(this.state.searchTerm.toLowerCase())
-                    )}
-                    // items={this.state.currentItems}
+                    items={this.state.currentItems}
                     onAdd={this.addToOrder}
                 />
                 {this.state.showItem &&
@@ -78,24 +78,40 @@ class App extends React.Component {
 
     chooseCategory(category) {
         if (category === "all") {
-            this.setState({ currentItems: this.state.items});
+            this.setState({ currentItems: this.state.items, currentCategory: null }); // Обнуляем текущую категорию при выборе всех товаров
             return;
         }
         this.setState({
+            currentCategory: category, // Сохраняем текущую категорию в состоянии компонента
             currentItems: this.state.items.filter((el) => el.category === category),
         });
     }
 
     sortItemsByPrice = (direction) => {
         let sortString = direction === "asc" ? "?sort=asc" : "?sort=desc";
-        axios.get(`https://fakestoreapi.com/products${sortString}`)
+        let itemsToSort = this.state.currentItems;
+        if (this.state.items && this.state.currentItems.length === this.state.items.length) {
+            itemsToSort = this.state.items;
+        }
+        axios.get(`https://fakestoreapi.com/products${sortString}&price`)
             .then(res => {
+                const sortedItems = res.data;
+                // Фильтруем все товары по текущему поисковому запросу
+                const filteredItems = sortedItems.filter((el) => {
+                    return !this.state.searchTerm || el.title.toLowerCase().includes(this.state.searchTerm.toLowerCase());
+                });
+                // Если установлена текущая категория, то фильтруем товары также по ней
+                const filteredAndCategorizedItems = filteredItems.filter((el) => {
+                    return !this.state.currentCategory || el.category === this.state.currentCategory;
+                });
                 this.setState({
-                    currentItems: res.data
+                    currentItems: filteredAndCategorizedItems
                 });
             })
             .catch(error => console.error(error));
     }
+
+
 
     deleteOrder(id) {
         this.setState({orders: this.state.orders.filter(el => el.id !== id)});
@@ -117,7 +133,22 @@ class App extends React.Component {
     }
 
     onSearchChange = (event) => {
-        this.setState({ searchTerm: event.target.value });
+        const searchTerm = event.target.value;
+        this.setState({ searchTerm }, () => {
+            this.filterItems();
+        });
+    }
+
+    filterItems = () => {
+        let filteredItems = [];
+        if (this.state.searchTerm !== '') {
+            filteredItems = this.state.items.filter(item =>
+                item.title.toLowerCase().includes(this.state.searchTerm.toLowerCase())
+            );
+        } else {
+            filteredItems = this.state.items;
+        }
+        this.setState({ currentItems: filteredItems });
     }
 }
 
