@@ -27,6 +27,8 @@
 
 .categories_items:hover{
     border-color: silver;
+    background: red;
+    color: white;
     transform: scale(1.1);
 }
 

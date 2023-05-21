@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import s from './Item.module.css'
+import { MdFavoriteBorder, MdFavorite} from "react-icons/md";
 
 class Item extends Component {
     render() {
@@ -15,6 +16,9 @@ class Item extends Component {
                 <h2>{this.props.item.title}</h2>
                 <p style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{description}</p>
                 <b>{this.props.item.price}$</b>
+                <div className={s.favoriteIcon} onClick={() => this.props.favoriteStatus(this.props.item)}>
+                    {this.props.item.favorite ? <MdFavorite /> : <MdFavoriteBorder />}
+                </div>
                 <div className={s.addToCart1} onClick={() => this.props.onAdd(this.props.item)}>+</div>
             </div>
         )

@@ -1,6 +1,7 @@
 import React, { Component, useState } from 'react'
 import s from './ShowItem.module.css'
 import {GrClose} from 'react-icons/gr'
+import {MdFavorite, MdFavoriteBorder} from "react-icons/md";
 
 class ShowItem extends Component {
     render() {
@@ -13,6 +14,9 @@ class ShowItem extends Component {
                         <h2>{this.props.item.title}</h2>
                         <p>{this.props.item.description}</p>
                         <b>{this.props.item.price}$</b>
+                        <div className={s.favoriteIcon} onClick={() => this.props.favoriteStatus(this.props.item)}>
+                            {this.props.item.favorite ? <MdFavorite /> : <MdFavoriteBorder />}
+                        </div>
                         <div className={s.addToCart2} onClick={() => this.props.onAdd(this.props.item)}>+</div>
                     </div>
                 </div>

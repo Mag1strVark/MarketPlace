@@ -7,7 +7,14 @@ class Main extends Component {
         return (
             <div className={s.container}>
                 {this.props.items.map(el => (
-                    <Item onShowItem={this.props.onShowItem} key={el.id} item={el} onAdd={this.props.onAdd}/>
+                    <Item
+                        onShowItem={this.props.onShowItem}
+                        key={el.id}
+                        item={el}
+                        onAdd={this.props.onAdd}
+                        favoriteStatus={this.props.favoriteStatus}
+                        favoriteItems={this.props.favoriteItems}
+                    />
                 ))}
             </div>
         )

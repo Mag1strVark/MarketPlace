@@ -23,6 +23,7 @@ class Categories extends Component {
             .then(res => {
                 const categories = res.data.map(category => ({key: category, name: category.charAt(0).toUpperCase() + category.slice(1)}))
                 categories.unshift({key: 'all', name: 'All'})
+                categories.push({ key: 'favorite', name: 'Favorite Items' })
                 this.setState({categories})
             })
             .catch(error => {
@@ -37,7 +38,7 @@ class Categories extends Component {
                     {this.state.categories.map(el => (
                         <div className={s.categories_items} key={el.key} onClick={() => this.props.chooseCategory(el.key)}>{el.name}</div>
                     ))}
-                    <div className={s.categories_items} onClick={this.toggleSortOrder}>Sort {this.state.sortOrder === 'asc' ? '↓'  : '↑'}</div>
+                    <div className={s.categories_items} onClick={this.toggleSortOrder}>Sort Price {this.state.sortOrder === 'asc' ? '↓'  : '↑'}</div>
                 </div>
             </div>
         )
