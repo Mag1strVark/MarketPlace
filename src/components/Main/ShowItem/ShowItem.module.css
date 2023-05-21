@@ -7,19 +7,34 @@
     background: rgba(0, 0, 0, 0.8);
     z-index: 9999;
     overflow: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.info{
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    width: 50%;
+    align-items: center;
+    justify-content: center;
 }
 
 .fullItem > div{
-    width: 600px;
+    width: 1000px;
+    height: 500px;
     position: relative;
-    margin: 10% auto;
     padding: 40px 30px;
     background: white;
     border-radius: 9px;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
 }
 
 .fullItem img{
-    width: 100%;
+    width: 50%;
     border-radius: 10px 10px 0 0;
 }
 

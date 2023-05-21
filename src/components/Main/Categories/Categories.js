@@ -7,8 +7,15 @@ class Categories extends Component {
         super(props)
         this.state = {
             categories: [],
-            price: null
+            sortOrder: 'asc'
         }
+    }
+
+    toggleSortOrder = () => {
+        const newSortOrder = this.state.sortOrder === 'asc' ? 'desc' : 'asc';
+        this.setState({ sortOrder: newSortOrder }, () => {
+            this.props.sortItemsByPrice(newSortOrder);
+        });
     }
 
     componentDidMount() {
@@ -22,14 +29,13 @@ class Categories extends Component {
                 console.log(error)
             })
     }
-
-
     render() {
         return (
             <div className={s.categories}>
                 {this.state.categories.map(el => (
-                    <div key={el.key} onClick={() => this.props.chooseCategory(el.key)}>{el.name}</div>
+                    <div className={s.categories_items} key={el.key} onClick={() => this.props.chooseCategory(el.key)}>{el.name}</div>
                 ))}
+                <div className={s.categories_items} onClick={this.toggleSortOrder}>Sort {this.state.sortOrder === 'asc' ? '↑' : '↓'}</div>
             </div>
         )
     }

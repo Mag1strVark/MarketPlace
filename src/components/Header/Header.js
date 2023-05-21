@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import s from './Header.module.css'
 import {FaShoppingBasket} from 'react-icons/fa'
 import Order from './Order/Order'
+import axios from "axios";
 
 const showOrders = (props) => {
     let summa = 0
@@ -22,27 +23,47 @@ const showNothing = () => {
     )
 }
 
+
 const Header = (props) => {
     let [cartOpen, setCartOpen] = useState(false)
+
+    const [searchTerm, setSearchTerm] = useState('');
+
+    const [suggestedItems, setSuggestedItems] = useState([]);
+    const onInputChange = (event) => {
+        const searchTermValue = event.target.value;
+        setSearchTerm(searchTermValue);
+        if (searchTermValue.length > 0) {
+            axios.get(`https://fakestoreapi.com/products?title_like=${searchTermValue}`)
+                .then(res => {
+                    setSuggestedItems(res.data);
+                })
+                .catch(error => console.error(error));
+        } else {
+            setSuggestedItems([]);
+        }
+    };
 
     return (
         <div className={s.container}>
             <div className={s.navigation}>
                 <span className={s.logo}>MarketPlace</span>
-                <input
-                    type="text"
-                    placeholder="Search items..."
-                    onChange={props.onSearch}
-                    value={props.searchQuery}
-                    className={s.searchInput}
-                />
-                {props.searchSuggestions.length > 0 && (
-                    <ul className={s.suggestions}>
-                        {props.searchSuggestions.map((item) => (
-                            <li key={item.id}>{item.title}</li>
-                        ))}
-                    </ul>
-                )}
+                <div className={s.search}>
+                    <input type="text" placeholder="Search" value={searchTerm} className={s.searchInput} onChange={onInputChange} />
+                    {suggestedItems.length > 0 &&
+                        <div className={s.suggestedItems}>
+                            {suggestedItems.map(item => (
+                                <div key={item.id} className={s.suggestedItem} onClick={() => {
+                                    setSearchTerm(item.title);
+                                    props.onSearchChange({target: {value: item.title}});
+                                    setSuggestedItems([]);
+                                }}>
+                                    {item.title}
+                                </div>
+                            ))}
+                        </div>
+                    }
+                </div>
                 <div className={s.menu}>
                     <FaShoppingBasket onClick={() => setCartOpen(cartOpen = !cartOpen)}
                                       className={cartOpen ? s.cartButtonActive : s.cartButton}/>

@@ -18,8 +18,7 @@ class App extends React.Component {
             items: null,
             showItem: false,
             fullItem: {},
-            searchQuery: "",
-            searchSuggestions: []
+            searchTerm: ''
         };
         this.addToOrder = this.addToOrder.bind(this);
         this.deleteOrder = this.deleteOrder.bind(this);
@@ -44,14 +43,20 @@ class App extends React.Component {
                 <Header
                     orders={this.state.orders}
                     onDelete={this.deleteOrder}
-                    onSearch={this.handleSearch}
-                    searchQuery={this.state.searchQuery}
-                    searchSuggestions={this.state.searchSuggestions}
+                    searchTerm={this.state.searchTerm}
+                    onSearchChange={this.onSearchChange}
                 />
-                <Categories chooseCategory={this.chooseCategory}/>
+                <Categories
+                    chooseCategory={this.chooseCategory}
+                    sortItemsByPrice={this.sortItemsByPrice}
+                    onShowItem={this.onShowItem}
+                />
                 <Main
                     onShowItem={this.onShowItem}
-                    items={this.state.currentItems}
+                    items={this.state.currentItems.filter(item =>
+                        item.title.toLowerCase().includes(this.state.searchTerm.toLowerCase())
+                    )}
+                    // items={this.state.currentItems}
                     onAdd={this.addToOrder}
                 />
                 {this.state.showItem &&
@@ -72,13 +77,24 @@ class App extends React.Component {
     }
 
     chooseCategory(category) {
-        if(category === 'all'){
-            this.setState({currentItems: this.state.items});
+        if (category === "all") {
+            this.setState({ currentItems: this.state.items});
             return;
         }
         this.setState({
-            currentItems: this.state.items.filter(el => el.category === category)
+            currentItems: this.state.items.filter((el) => el.category === category),
         });
+    }
+
+    sortItemsByPrice = (direction) => {
+        let sortString = direction === "asc" ? "?sort=asc" : "?sort=desc";
+        axios.get(`https://fakestoreapi.com/products${sortString}`)
+            .then(res => {
+                this.setState({
+                    currentItems: res.data
+                });
+            })
+            .catch(error => console.error(error));
     }
 
     deleteOrder(id) {
@@ -100,36 +116,9 @@ class App extends React.Component {
         }
     }
 
-    handleSearch = (event) => {
-        const searchQuery = event.target.value;
-        this.setState({ searchQuery }, () => {
-            this.filterItems();
-            this.handleSearchSuggestions(); // Вызов метода handleSearchSuggestions
-        });
-    };
-
-
-    filterItems() {
-        const { items, searchQuery } = this.state;
-        if (searchQuery === "") {
-            this.setState({ currentItems: items });
-            return;
-        }
-
-        const filteredItems = items.filter((item) =>
-            item.title.toLowerCase().includes(searchQuery.toLowerCase())
-        );
-        this.setState({ currentItems: filteredItems });
+    onSearchChange = (event) => {
+        this.setState({ searchTerm: event.target.value });
     }
-
-    handleSearchSuggestions() {
-        const { items, searchQuery } = this.state;
-        const searchSuggestions = items.filter((item) =>
-            item.title.toLowerCase().includes(searchQuery.toLowerCase())
-        );
-        this.setState({ searchSuggestions });
-    }
-
 }
 
 export default App;

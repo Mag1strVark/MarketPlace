@@ -9,10 +9,12 @@ class ShowItem extends Component {
                 <div>
                     <button  className={s.closeButton} onClick={() => this.props.onShowItem(this.props.item)}><GrClose/></button>
                     <img src={this.props.item.image} alt="icon"/>
-                    <h2>{this.props.item.title}</h2>
-                    <p>{this.props.item.description}</p>
-                    <b>{this.props.item.price}$</b>
-                    <div className={s.addToCart2} onClick={() => this.props.onAdd(this.props.item)}>+</div>
+                    <div className={s.info}>
+                        <h2>{this.props.item.title}</h2>
+                        <p>{this.props.item.description}</p>
+                        <b>{this.props.item.price}$</b>
+                        <div className={s.addToCart2} onClick={() => this.props.onAdd(this.props.item)}>+</div>
+                    </div>
                 </div>
             </div>
         )
