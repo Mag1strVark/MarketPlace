@@ -106,6 +106,28 @@
     padding-bottom: 0;
 }
 
+/* Анимация для появления корзины */
+.shopCart-enter {
+    opacity: 0;
+    transform: translateY(-100%);
+}
+.shopCart-enter-active {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 300ms, transform 300ms;
+}
+
+/* Анимация для скрытия корзины */
+.shopCart-exit {
+    opacity: 1;
+    transform: translateY(0);
+}
+.shopCart-exit-active {
+    opacity: 0;
+    transform: translateY(-100%);
+    transition: opacity 300ms, transform 300ms;
+}
+
 .empty{
     display: flex;
     align-items: center;

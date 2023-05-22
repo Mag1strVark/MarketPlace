@@ -1,48 +1,74 @@
-import React, {useState} from 'react'
-import s from './Header.module.css'
-import {FaShoppingBasket} from 'react-icons/fa'
-import Order from './Order/Order'
+import React, { useState, useEffect, useRef } from 'react';
+import s from './Header.module.css';
+import { FaShoppingBasket } from 'react-icons/fa';
+import Order from './Order/Order';
+import { useSpring, animated } from 'react-spring';
 
 const showOrders = (props) => {
-    let summa = 0
-    props.orders.forEach(el => summa += Number.parseFloat(el.price))
-    return (<div>
-        {props.orders.map(el => (
-            <Order onDelete={props.onDelete} key={el.id} item={el} summa={summa}/>
-        ))}
-        <p className={s.summa}>Сумма: {new Intl.NumberFormat().format(summa)}$</p>
-    </div>)
-}
+    let summa = 0;
+    props.orders.forEach((el) => (summa += Number.parseFloat(el.price)));
+    return (
+        <div>
+            {props.orders.map((el) => (
+                <Order onDelete={props.onDelete} key={el.id} item={el} summa={summa} />
+            ))}
+            <p className={s.summa}>Сумма: {new Intl.NumberFormat().format(summa)}$</p>
+        </div>
+    );
+};
 
 const showNothing = () => {
     return (
         <div className={s.empty}>
             <h2>Товаров нет</h2>
         </div>
-    )
-}
-
+    );
+};
 
 const Header = (props) => {
-    let [cartOpen, setCartOpen] = useState(false)
+    const [cartOpen, setCartOpen] = useState(false);
+    const cartRef = useRef(null);
+    const styles = useSpring({
+        opacity: cartOpen ? 1 : 0,
+        transform: cartOpen ? 'translateY(0)' : 'translateY(-100%)',
+    });
+
+    useEffect(() => {
+        // функция-обработчик клика на странице
+        const handleClickOutside = (event) => {
+            if (cartRef.current && !cartRef.current.contains(event.target)) {
+                setCartOpen(false);
+            }
+        };
+
+        // добавление слушателя событий на всю страницу
+        document.addEventListener('mousedown', handleClickOutside);
+
+        // удаление слушателя событий при размонтировании компонента
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
 
     return (
         <div className={s.container}>
             <div className={s.navigation}>
                 <span className={s.logo}>MarketPlace</span>
                 <div className={s.menu}>
-                    <FaShoppingBasket onClick={() => setCartOpen(cartOpen = !cartOpen)}
-                                      className={cartOpen ? s.cartButtonActive : s.cartButton}/>
+                    <FaShoppingBasket
+                        onClick={() => setCartOpen(!cartOpen)}
+                        className={cartOpen ? s.cartButtonActive : s.cartButton}
+                    />
                     {cartOpen && (
-                        <div className={s.shopCart}>
+                        <animated.div ref={cartRef} style={styles} className={s.shopCart}>
                             {props.orders.length > 0 ? showOrders(props) : showNothing()}
-                        </div>
+                        </animated.div>
                     )}
                 </div>
             </div>
             <div className={s.presentation}></div>
         </div>
-    )
-}
+    );
+};
 
-export default Header
+export default Header;

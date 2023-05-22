@@ -110,22 +110,24 @@ class App extends React.Component {
         if (this.state.items && this.state.currentItems.length === this.state.items.length) {
             itemsToSort = this.state.items;
         }
-        axios.get(`https://fakestoreapi.com/products${sortString}&price`)
-            .then(res => {
-                const sortedItems = res.data;
-                // Фильтруем все товары по текущему поисковому запросу
-                const filteredItems = sortedItems.filter((el) => {
-                    return !this.state.searchTerm || el.title.toLowerCase().includes(this.state.searchTerm.toLowerCase());
-                });
-                // Если установлена текущая категория, то фильтруем товары также по ней
-                const filteredAndCategorizedItems = filteredItems.filter((el) => {
-                    return !this.state.currentCategory || el.category === this.state.currentCategory;
-                });
-                this.setState({
-                    currentItems: filteredAndCategorizedItems
-                });
-            })
-            .catch(error => console.error(error));
+        const sortedItems = [...itemsToSort].sort((a, b) => {
+            if (direction === "asc") {
+                return a.price - b.price;
+            } else {
+                return b.price - a.price;
+            }
+        });
+        // Фильтруем все товары по текущему поисковому запросу
+        const filteredItems = sortedItems.filter((el) => {
+            return !this.state.searchTerm || el.title.toLowerCase().includes(this.state.searchTerm.toLowerCase());
+        });
+        // Если установлена текущая категория, то фильтруем товары также по ней
+        const filteredAndCategorizedItems = filteredItems.filter((el) => {
+            return !this.state.currentCategory || el.category === this.state.currentCategory;
+        });
+        this.setState({
+            currentItems: filteredAndCategorizedItems
+        });
     }
 
     deleteOrder(id) {
@@ -174,9 +176,9 @@ class App extends React.Component {
         }
     }
 
-    favoriteStatus(item){
+    favoriteStatus(item) {
         item.favorite = !item.favorite;
-        const newItems = [...this.state.items];
+        const newItems = this.state.items ? [...this.state.items] : [];
         const index = newItems.findIndex(el => el.id === item.id);
         newItems[index] = item;
         const filteredItems = newItems.filter((el) => {
