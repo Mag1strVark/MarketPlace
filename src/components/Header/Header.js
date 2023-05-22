@@ -5,17 +5,24 @@ import Order from './Order/Order';
 import { useSpring, animated } from 'react-spring';
 
 const showOrders = (props) => {
-    let summa = 0;
-    props.orders.forEach((el) => (summa += Number.parseFloat(el.price)));
+    const totalPrice = props.orders.reduce((acc, curr) => acc + curr.price, 0);
     return (
         <div>
             {props.orders.map((el) => (
-                <Order onDelete={props.onDelete} key={el.id} item={el} summa={summa} />
+                <Order
+                    onDelete={props.onDelete}
+                    key={el.id}
+                    item={el}
+                    totalPrice={totalPrice} // add totalPrice prop
+                />
             ))}
-            <p className={s.summa}>Сумма: {new Intl.NumberFormat().format(summa)}$</p>
+            <p className={s.summa}>Сумма: {totalPrice}$</p>
         </div>
     );
 };
+
+
+
 
 const showNothing = () => {
     return (
