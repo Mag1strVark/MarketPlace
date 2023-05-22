@@ -38,7 +38,7 @@ class Categories extends Component {
                     {this.state.categories.map(el => (
                         <div className={s.categories_items} key={el.key} onClick={() => this.props.chooseCategory(el.key)}>{el.name}</div>
                     ))}
-                    <div className={s.categories_items} onClick={this.toggleSortOrder}>Sort Price {this.state.sortOrder === 'asc' ? '↓'  : '↑'}</div>
+                    <div className={s.categories_items} onClick={this.toggleSortOrder}>Sort Price {this.state.sortOrder === 'asc' ? '↓'  : '↑' }</div>
                 </div>
             </div>
         )

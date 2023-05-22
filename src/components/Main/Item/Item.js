@@ -3,6 +3,13 @@ import s from './Item.module.css'
 import { MdFavoriteBorder, MdFavorite} from "react-icons/md";
 
 class Item extends Component {
+
+    toggleFavorite = () => {
+        const { item } = this.props;
+        item.favorite = !item.favorite;
+        this.forceUpdate();
+    }
+
     render() {
         const maxLength = 200; // Максимальное количество символов в description
 
@@ -16,10 +23,13 @@ class Item extends Component {
                 <h2>{this.props.item.title}</h2>
                 <p style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{description}</p>
                 <b>{this.props.item.price}$</b>
-                <div className={s.favoriteIcon} onClick={() => this.props.favoriteStatus(this.props.item)}>
+                <div className={s.addToCart1} onClick={() => this.props.onAdd(this.props.item)}>+</div>
+                <div
+                    className={this.props.item.favorite ? s.favoriteIconActive : s.favoriteIcon}
+                    onClick={this.toggleFavorite}
+                >
                     {this.props.item.favorite ? <MdFavorite /> : <MdFavoriteBorder />}
                 </div>
-                <div className={s.addToCart1} onClick={() => this.props.onAdd(this.props.item)}>+</div>
             </div>
         )
     }

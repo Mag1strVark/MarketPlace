@@ -12,8 +12,6 @@ class Main extends Component {
                         key={el.id}
                         item={el}
                         onAdd={this.props.onAdd}
-                        favoriteStatus={this.props.favoriteStatus}
-                        favoriteItems={this.props.favoriteItems}
                     />
                 ))}
             </div>
