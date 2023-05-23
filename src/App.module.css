@@ -26,6 +26,7 @@
     background-color: #333;
 }
 
+
 @media screen and (max-width: 360px) {
     .wrapper {
         width: 80%;

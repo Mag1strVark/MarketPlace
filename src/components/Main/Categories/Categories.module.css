@@ -44,7 +44,9 @@
 @media screen and (max-width: 1297px) {
 .categories_items{
     font-size: 15px;
-    padding: 10px 15px;
+    padding: 10px 30px;
+    justify-content: center;
+    align-items: center;
 }
 }
 
@@ -63,6 +65,10 @@
     .categories_items:hover{
         border-color: transparent;
         transform: scale(1);
+    }
+
+    .categories::-webkit-scrollbar {
+        display: none;
     }
 }
 
