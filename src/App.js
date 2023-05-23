@@ -146,12 +146,17 @@ class App extends React.Component {
 
     addToOrder(item) {
         let isInArray = false;
-        this.state.orders.forEach(el => {
-            if (el.id === item.id)
+        const updatedOrders = this.state.orders.map(el => {
+            if (el.id === item.id) {
                 isInArray = true;
+                return {...el, count: el.count + 1};
+            } else {
+                return el;
+            }
         });
         if (!isInArray) {
-            this.setState({orders: [...this.state.orders, item]});
+            const newItem = {...item, count: 1};
+            this.setState({orders: [...this.state.orders, newItem]});
             toast.success('Order added successfully!', {
                 position: "top-center",
                 autoClose: 1000,
@@ -163,7 +168,8 @@ class App extends React.Component {
                 theme: "light",
             });
         } else {
-            toast.success('This order is already in the cart!', {
+            this.setState({orders: updatedOrders});
+            toast.success('Item count updated successfully!', {
                 position: "top-center",
                 autoClose: 1000,
                 hideProgressBar: false,
@@ -175,6 +181,8 @@ class App extends React.Component {
             });
         }
     }
+
+
 
     onSearchChange = (event) => {
         const searchTerm = event.target.value;

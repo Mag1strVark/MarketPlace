@@ -5,7 +5,7 @@ import Order from './Order/Order';
 import { useSpring, animated } from 'react-spring';
 
 const showOrders = (props) => {
-    const totalPrice = props.orders.reduce((acc, curr) => acc + curr.price, 0);
+    const totalPrice = props.orders.reduce((acc, curr) => acc + curr.price * curr.count, 0);
     return (
         <div>
             {props.orders.map((el) => (
@@ -13,15 +13,14 @@ const showOrders = (props) => {
                     onDelete={props.onDelete}
                     key={el.id}
                     item={el}
-                    totalPrice={totalPrice} // add totalPrice prop
+                    totalPrice={totalPrice}
+                    count={el.count}
                 />
             ))}
             <p className={s.summa}>Сумма: {totalPrice}$</p>
         </div>
     );
 };
-
-
 
 
 const showNothing = () => {

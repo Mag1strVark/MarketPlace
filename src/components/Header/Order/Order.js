@@ -4,7 +4,7 @@ import {FaMinus, FaPlus, FaTrash} from 'react-icons/fa'
 
 class Order extends Component {
     state = {
-        quantity: 1
+        quantity: this.props.count
     }
 
     handleIncrement = () => {

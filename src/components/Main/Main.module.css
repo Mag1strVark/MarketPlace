@@ -4,3 +4,11 @@
     flex-wrap: wrap;
     justify-content: space-between;
 }
+
+@media screen and (max-width: 1122px) {
+    .container{
+        flex-wrap: nowrap;
+        flex-direction: column;
+        align-items: center;
+    }
+}

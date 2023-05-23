@@ -1,5 +1,5 @@
 .wrapper{
-    width: 1280px;
+    width: 80%;
     margin: 50px auto;
     display: flex;
     flex-direction: column;
@@ -24,4 +24,10 @@
 
 .scrollToTopBtn:hover {
     background-color: #333;
+}
+
+@media screen and (max-width: 360px) {
+    .wrapper {
+        width: 80%;
+    }
 }

@@ -94,6 +94,7 @@
 
 .shopCart{
     position: absolute;
+    right: 0px;
     top: 30px;
     width: 450px;
     background: #fafafa;
@@ -104,6 +105,12 @@
     z-index: 1000;
     padding: 20px;
     padding-bottom: 0;
+}
+
+@media screen and (max-width: 360px) {
+    .shopCart{
+        width: 90%;
+    }
 }
 
 /* Анимация для появления корзины */

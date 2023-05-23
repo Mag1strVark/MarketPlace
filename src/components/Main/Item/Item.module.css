@@ -11,6 +11,24 @@
     gap: 20px;
 }
 
+@media screen and (max-width: 1122px) {
+    .item{
+        width: 45%;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .item{
+        width: 70%;
+    }
+}
+
+@media screen and (max-width: 360px) {
+    .item{
+        width: 100%;
+    }
+}
+
 .item img{
     width: 100%;
     height: 450px;

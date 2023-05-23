@@ -10,6 +10,7 @@
 .categories{
     display: flex;
     flex-direction: row;
+    gap: 20px;
 }
 
 .categories_items{
@@ -18,8 +19,6 @@
     background: #f2f2f2;
     border-radius: 50px;
     padding: 10px 20px;
-    margin-bottom: 20px;
-    margin-right: 15px;
     cursor: pointer;
     border: 1px solid transparent;
     transition: 0.4s;
@@ -40,4 +39,43 @@
     outline: none;
     width: 60%;
     position: relative;
+}
+
+@media screen and (max-width: 1297px) {
+.categories_items{
+    font-size: 15px;
+    padding: 2px 7px;
+}
+}
+
+@media screen and (max-width: 1122px) {
+    .categories{
+        gap: 5px;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .categories_items{
+        font-size: 14px;
+        padding: 2px 20px;
+        justify-content: center;
+        align-items: center;
+    }
+    .categories{
+        overflow: scroll;
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 360px) {
+    .categories_items{
+        font-size: 12px;
+        padding: 2px 20px;
+        justify-content: center;
+        align-items: center;
+    }
+    .categories{
+        overflow: scroll;
+        width: 100%;
+    }
 }
