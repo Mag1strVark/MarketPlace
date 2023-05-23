@@ -12,13 +12,14 @@ import 'react-toastify/dist/ReactToastify.css';
 class App extends React.Component {
     constructor(props) {
         super(props);
+        const storedState = JSON.parse(localStorage.getItem('appState')) || {}; // get the stored state from local storage or initialize with an empty object
         this.state = {
-            orders: [],
-            currentItems: [],
+            orders: storedState.orders || [],
+            currentItems: storedState.currentItems || [],
             items: null,
             showItem: false,
             fullItem: {},
-            currentCategory: null,
+            currentCategory: storedState.currentCategory || null,
             searchTerm: '',
         };
         this.addToOrder = this.addToOrder.bind(this);
@@ -30,12 +31,26 @@ class App extends React.Component {
     componentDidMount() {
         axios.get('https://fakestoreapi.com/products')
             .then(res => {
-                const items = res.data.map(item => ({...item, favorite: false})); // добавляем новое свойство isFavorite со значением false
-                this.setState({ items, currentItems: items });
+                const items = res.data.map(item => ({...item, favorite: false}))
+                this.setState({items}, () => {
+                    this.filterItems()
+                });
             })
-            .catch(function (error){
-                console.log(error);
+            .catch(function (error) {
+                console.log(error)
             });
+
+        window.addEventListener('beforeunload', this.saveStateToLocalStorage)
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('beforeunload', this.saveStateToLocalStorage)
+    }
+
+    saveStateToLocalStorage = () => {
+        const {orders, currentItems, currentCategory, items} = this.state;
+        const appState = {orders, currentItems, currentCategory, items};
+        localStorage.setItem('appState', JSON.stringify(appState));
     }
 
     render() {
@@ -46,6 +61,7 @@ class App extends React.Component {
                     onDelete={this.deleteOrder}
                     searchTerm={this.state.searchTerm}
                     onSearchChange={this.onSearchChange}
+                    onUpdate={this.onUpdate}
                 />
                 <Categories
                     chooseCategory={this.chooseCategory}
@@ -67,7 +83,7 @@ class App extends React.Component {
                     />}
                 <Footer/>
                 <button className={s.scrollToTopBtn} onClick={this.handleScrollToTop}>↑</button>
-                <ToastContainer />
+                <ToastContainer/>
             </div>
         );
     }
@@ -79,12 +95,12 @@ class App extends React.Component {
 
     chooseCategory(category) {
         if (category === "all") {
-            this.setState({ currentItems: this.state.items, currentCategory: null }); // Обнуляем текущую категорию при выборе всех товаров
+            this.setState({currentItems: this.state.items, currentCategory: null})
             return;
         } else if (category === "favorite") {
-            const favoriteItems = this.state.items.filter((el) => el.favorite); // Фильтруем товары по свойству isFavorite
+            const favoriteItems = this.state.items.filter((el) => el.favorite)
             this.setState({
-                currentCategory: category, // Сохраняем текущую категорию в состоянии компонента
+                currentCategory: category,
                 currentItems: favoriteItems,
             });
         } else {
@@ -95,8 +111,10 @@ class App extends React.Component {
         }
     }
 
-
     sortItemsByPrice = (direction) => {
+        if (!this.state.items) {
+            return;
+        }
         let sortString = direction === "asc" ? "?sort=asc" : "?sort=desc";
         let itemsToSort = this.state.currentItems;
         if (this.state.items && this.state.currentItems.length === this.state.items.length) {
@@ -128,7 +146,6 @@ class App extends React.Component {
             currentItems: filteredAndCategorizedItems
         });
     }
-
 
     deleteOrder(id) {
         this.setState({orders: this.state.orders.filter(el => el.id !== id)});
@@ -183,10 +200,9 @@ class App extends React.Component {
     }
 
 
-
     onSearchChange = (event) => {
         const searchTerm = event.target.value;
-        this.setState({ searchTerm }, () => {
+        this.setState({searchTerm}, () => {
             this.filterItems();
         });
     }
@@ -200,8 +216,20 @@ class App extends React.Component {
         } else {
             filteredItems = this.state.items;
         }
-        this.setState({ currentItems: filteredItems });
+        this.setState({currentItems: filteredItems});
     }
+
+    onUpdate = (updatedItem) => {
+        const {orders} = this.state;
+        const updatedOrders = orders.map(item => {
+            if (item.id === updatedItem.id) {
+                return updatedItem;
+            }
+            return item;
+        });
+        const count = updatedOrders.reduce((total, item) => total + item.count, 0); // calculate the new count based on the updated orders
+        this.setState({orders: updatedOrders, count: count}); // set the updated orders and count in state
+    };
 
     handleScrollToTop = () => {
         window.scrollTo({

@@ -10,10 +10,25 @@ class ShowItem extends Component {
         this.forceUpdate();
     }
 
+    componentDidMount() {
+        document.addEventListener('mousedown', this.handleClickOutside);
+    }
+
+    handleClickOutside = (event) => {
+        const showItemElement = document.querySelector(`.${s.main}`);
+        if (showItemElement && !showItemElement.contains(event.target)) {
+            this.props.onShowItem(this.props.item);
+        }
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('mousedown', this.handleClickOutside);
+    }
+
     render() {
         return (
             <div className={s.fullItem}>
-                <div>
+                <div className={s.main}>
                     <button className={s.closeButton} onClick={() => this.props.onShowItem(this.props.item)}><GrClose /></button>
                     <img src={this.props.item.image} alt="icon" />
                     <div className={s.info}>

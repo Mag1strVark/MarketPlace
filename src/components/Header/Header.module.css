@@ -113,6 +113,13 @@
     }
 }
 
+@media screen and (max-width: 600px) {
+    .shopCart{
+        width: 90%;
+    }
+}
+
+
 /* Анимация для появления корзины */
 .shopCart-enter {
     opacity: 0;

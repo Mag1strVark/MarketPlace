@@ -11,10 +11,10 @@ const showOrders = (props) => {
             {props.orders.map((el) => (
                 <Order
                     onDelete={props.onDelete}
+                    onUpdate={props.onUpdate}
                     key={el.id}
                     item={el}
                     totalPrice={totalPrice}
-                    count={el.count}
                 />
             ))}
             <p className={s.summa}>Сумма: {totalPrice}$</p>
@@ -34,6 +34,7 @@ const showNothing = () => {
 const Header = (props) => {
     const [cartOpen, setCartOpen] = useState(false);
     const cartRef = useRef(null);
+
     const styles = useSpring({
         opacity: cartOpen ? 1 : 0,
         transform: cartOpen ? 'translateY(0)' : 'translateY(-100%)',

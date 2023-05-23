@@ -1,21 +1,21 @@
 import React, { Component } from 'react'
 import s from './Order.module.css'
 import {FaMinus, FaPlus, FaTrash} from 'react-icons/fa'
+import item from "../../Main/Item/Item";
 
 class Order extends Component {
-    state = {
-        quantity: this.props.count
-    }
 
     handleIncrement = () => {
-        this.setState((prevState) => ({ quantity: prevState.quantity + 1 }))
+        const { item, onUpdate } = this.props;
+        onUpdate({...item, count: item.count + 1});
     }
 
     handleDecrement = () => {
-        if (this.state.quantity === 1) {
+        const { item, onUpdate } = this.props;
+        if (item.count === 1) {
             return;
         }
-        this.setState((prevState) => ({ quantity: prevState.quantity - 1 }))
+        onUpdate({...item, count: item.count - 1});
     }
 
     render() {
@@ -26,10 +26,10 @@ class Order extends Component {
                 <h2>{item.title}</h2>
                 <div className={s.counter}>
                     <FaMinus className={s.minus} onClick={this.handleDecrement}/>
-                    <span className={s.quantity}>{this.state.quantity}</span>
+                    <span className={s.quantity}>{item.count}</span>
                     <FaPlus className={s.plus} onClick={this.handleIncrement}/>
                 </div>
-                <b>{item.price * this.state.quantity}$</b>
+                <b>{item.price * item.count}$</b>
                 <FaTrash className={s.trash} onClick={() => onDelete(item.id)}/>
             </div>
         )

@@ -44,13 +44,25 @@
 @media screen and (max-width: 1297px) {
 .categories_items{
     font-size: 15px;
-    padding: 2px 7px;
+    padding: 10px 15px;
 }
 }
 
 @media screen and (max-width: 1122px) {
+    .categories_items{
+        font-size: 14px;
+        padding: 2px 30px;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
     .categories{
-        gap: 5px;
+        overflow-x: scroll;
+        width: 100%;
+    }
+    .categories_items:hover{
+        border-color: transparent;
+        transform: scale(1);
     }
 }
 
@@ -62,7 +74,7 @@
         align-items: center;
     }
     .categories{
-        overflow: scroll;
+        overflow-x: scroll;
         width: 100%;
     }
 }

@@ -3,6 +3,25 @@ import s from './Item.module.css'
 import { MdFavoriteBorder, MdFavorite} from "react-icons/md";
 
 class Item extends Component {
+    constructor(props) {
+        super(props);
+        this.itemRef = React.createRef(); // create a reference to the item element
+    }
+
+    componentDidMount() {
+        document.addEventListener('click', this.handleClickOutside); // listen for clicks on the document
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('click', this.handleClickOutside); // cleanup the event listener on unmount
+    }
+
+    handleClickOutside = (event) => {
+        const { onClose } = this.props;
+        if (this.itemRef.current && !this.itemRef.current.contains(event.target)) { // check if click target is outside the item element
+            onClose();
+        }
+    }
 
     toggleFavorite = () => {
         const { item } = this.props;
@@ -18,7 +37,7 @@ class Item extends Component {
             : this.props.item.description;
 
         return (
-            <div className={s.item}>
+            <div className={s.item} ref={this.itemRef}>
                 <img src={this.props.item.image} alt="icon" onClick={() => this.props.onShowItem(this.props.item)}/>
                 <h2>{this.props.item.title}</h2>
                 <p style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{description}</p>
