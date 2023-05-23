@@ -6,6 +6,7 @@ import { useSpring, animated } from 'react-spring';
 
 const showOrders = (props) => {
     const totalPrice = props.orders.reduce((acc, curr) => acc + curr.price * curr.count, 0);
+    const formattedTotalPrice = totalPrice.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
     return (
         <div>
             {props.orders.map((el) => (
@@ -14,13 +15,14 @@ const showOrders = (props) => {
                     onUpdate={props.onUpdate}
                     key={el.id}
                     item={el}
-                    totalPrice={totalPrice}
+                    totalPrice={formattedTotalPrice}
                 />
             ))}
-            <p className={s.summa}>Total Price: {totalPrice}$</p>
+            <p className={s.summa}>Total Price: {formattedTotalPrice}</p>
         </div>
     );
 };
+
 
 
 const showNothing = () => {

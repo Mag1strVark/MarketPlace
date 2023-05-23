@@ -4,11 +4,6 @@ import { GrClose } from 'react-icons/gr'
 import { MdFavorite, MdFavoriteBorder } from "react-icons/md";
 
 class ShowItem extends Component {
-    toggleFavorite = () => {
-        const { item } = this.props;
-        item.favorite = !item.favorite;
-        this.forceUpdate();
-    }
 
     componentDidMount() {
         document.addEventListener('mousedown', this.handleClickOutside);
@@ -37,7 +32,7 @@ class ShowItem extends Component {
                         <b>{this.props.item.price}$</b>
                         <div
                             className={this.props.item.favorite ? s.favoriteIconActive : s.favoriteIcon}
-                            onClick={this.toggleFavorite}
+                            onClick={() => this.props.toggleFavorite(this.props.item.id)}
                         >
                             {this.props.item.favorite ? <MdFavorite /> : <MdFavoriteBorder />}
                         </div>

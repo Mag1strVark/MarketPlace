@@ -12,6 +12,7 @@ class Main extends Component {
                         key={el.id}
                         item={el}
                         onAdd={this.props.onAdd}
+                        toggleFavorite={this.props.toggleFavorite}
                     />
                 ))}
             </div>

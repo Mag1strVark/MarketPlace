@@ -8,30 +8,41 @@ import ShowItem from './components/Main/ShowItem/ShowItem';
 import axios from "axios";
 import {toast, ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import _ from 'lodash';
+
 
 class App extends React.Component {
     constructor(props) {
         super(props);
-        const storedState = JSON.parse(localStorage.getItem('appState')) || {}; // get the stored state from local storage or initialize with an empty object
+        const storedState = JSON.parse(localStorage.getItem('appState')) || {};
+        const storedItems = storedState.items || [];
+        const itemsWithFavorite = storedItems.map(item => ({...item, favorite: item.favorite || false}));
         this.state = {
             orders: storedState.orders || [],
             currentItems: storedState.currentItems || [],
-            items: null,
+            items: itemsWithFavorite,
             showItem: false,
             fullItem: {},
             currentCategory: storedState.currentCategory || null,
             searchTerm: '',
         };
-        this.addToOrder = this.addToOrder.bind(this);
-        this.deleteOrder = this.deleteOrder.bind(this);
-        this.chooseCategory = this.chooseCategory.bind(this);
-        this.onShowItem = this.onShowItem.bind(this);
+        this.addToOrder = this.addToOrder.bind(this)
+        this.deleteOrder = this.deleteOrder.bind(this)
+        this.chooseCategory = this.chooseCategory.bind(this)
+        this.onShowItem = this.onShowItem.bind(this)
+        this.saveStateToLocalStorage = this.saveStateToLocalStorage.bind(this);
     }
+
 
     componentDidMount() {
         axios.get('https://fakestoreapi.com/products')
             .then(res => {
-                const items = res.data.map(item => ({...item, favorite: false}))
+                const storedState = JSON.parse(localStorage.getItem('appState')) || {};
+                const storedItems = storedState.items || [];
+                const items = res.data.map(item => {
+                    const storedItem = storedItems.find(storedItem => storedItem.id === item.id);
+                    return {...item, favorite: storedItem ? storedItem.favorite : false};
+                });
                 this.setState({items}, () => {
                     this.filterItems()
                 });
@@ -43,13 +54,15 @@ class App extends React.Component {
         window.addEventListener('beforeunload', this.saveStateToLocalStorage)
     }
 
+
     componentWillUnmount() {
         window.removeEventListener('beforeunload', this.saveStateToLocalStorage)
     }
 
     saveStateToLocalStorage = () => {
         const {orders, currentItems, currentCategory, items} = this.state;
-        const appState = {orders, currentItems, currentCategory, items};
+        const itemsToSave = items.map(item => ({...item, favorite: item.favorite || false}));
+        const appState = {orders, currentItems, currentCategory, items: itemsToSave};
         localStorage.setItem('appState', JSON.stringify(appState));
     }
 
@@ -74,12 +87,14 @@ class App extends React.Component {
                     onShowItem={this.onShowItem}
                     items={this.state.currentItems}
                     onAdd={this.addToOrder}
+                    toggleFavorite={this.toggleFavorite}
                 />
                 {this.state.showItem &&
                     <ShowItem
                         onShowItem={this.onShowItem}
                         item={this.state.fullItem}
                         onAdd={this.addToOrder}
+                        toggleFavorite={this.toggleFavorite}
                     />}
                 <Footer/>
                 <button className={s.scrollToTopBtn} onClick={this.handleScrollToTop}>↑</button>
@@ -110,6 +125,27 @@ class App extends React.Component {
             });
         }
     }
+
+    toggleFavorite = (id) => {
+        const { items, fullItem } = this.state;
+        const updatedItems = items.map(item => {
+            if (item.id === id) {
+                return {...item, favorite: !item.favorite};
+            }
+            return item;
+        });
+        const updatedFullItem = fullItem.id === id ? {...fullItem, favorite: !fullItem.favorite} : fullItem;
+        console.log(updatedItems)
+        console.log(updatedFullItem)
+        this.setState({
+            items: updatedItems,
+            fullItem: updatedFullItem
+        }, () => {
+            this.filterItems();
+            this.saveStateToLocalStorage();
+        });
+    }
+
 
     sortItemsByPrice = (direction) => {
         if (!this.state.items) {
@@ -160,6 +196,7 @@ class App extends React.Component {
             theme: "light",
         });
     }
+
 
     addToOrder(item) {
         let isInArray = false;

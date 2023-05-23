@@ -13,7 +13,6 @@
 }
 
 .main{
-
 }
 
 .info{
@@ -127,4 +126,42 @@
     font-size: 20px;
     color: #333;
     padding: 0;
+}
+
+@media screen and (max-width: 1106px) {
+    .fullItem{
+        /*background: white;*/
+    }
+
+    .fullItem > div{
+        width: 80%;
+        height: 100%;
+        position: relative;
+        padding: 40px 30px;
+        background: white;
+        border-radius: 9px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .closeButton{
+        top: 80px;
+        right: 200px;
+    }
+
+    .addToCart2{
+        right: 200px;
+    }
+
+    .favoriteIcon{
+        right: 250px;
+    }
+
+    .favoriteIconActive{
+        right: 250px;
+    }
+
 }

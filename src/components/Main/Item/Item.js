@@ -5,7 +5,7 @@ import { MdFavoriteBorder, MdFavorite} from "react-icons/md";
 class Item extends Component {
     constructor(props) {
         super(props);
-        this.itemRef = React.createRef(); // create a reference to the item element
+        this.itemRef = React.createRef();
     }
 
     componentDidMount() {
@@ -14,19 +14,6 @@ class Item extends Component {
 
     componentWillUnmount() {
         document.removeEventListener('click', this.handleClickOutside); // cleanup the event listener on unmount
-    }
-
-    handleClickOutside = (event) => {
-        const { onClose } = this.props;
-        if (this.itemRef.current && !this.itemRef.current.contains(event.target)) { // check if click target is outside the item element
-            onClose();
-        }
-    }
-
-    toggleFavorite = () => {
-        const { item } = this.props;
-        item.favorite = !item.favorite;
-        this.forceUpdate();
     }
 
     render() {
@@ -45,7 +32,7 @@ class Item extends Component {
                 <div className={s.addToCart1} onClick={() => this.props.onAdd(this.props.item)}>+</div>
                 <div
                     className={this.props.item.favorite ? s.favoriteIconActive : s.favoriteIcon}
-                    onClick={this.toggleFavorite}
+                    onClick={() => this.props.toggleFavorite(this.props.item.id)}
                 >
                     {this.props.item.favorite ? <MdFavorite /> : <MdFavoriteBorder />}
                 </div>

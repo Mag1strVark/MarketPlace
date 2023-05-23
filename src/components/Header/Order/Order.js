@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import s from './Order.module.css'
 import {FaMinus, FaPlus, FaTrash} from 'react-icons/fa'
-import item from "../../Main/Item/Item";
 
 class Order extends Component {
 
@@ -20,6 +19,9 @@ class Order extends Component {
 
     render() {
         const { item, onDelete } = this.props;
+        const totalPrice = item.price * item.count;
+        const formattedPrice = totalPrice.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+
         return (
             <div className={s.item}>
                 <img src={item.image} alt="icon"/>
@@ -29,10 +31,11 @@ class Order extends Component {
                     <span className={s.quantity}>{item.count}</span>
                     <FaPlus className={s.plus} onClick={this.handleIncrement}/>
                 </div>
-                <b>{item.price * item.count}$</b>
+                <b>{formattedPrice}</b>
                 <FaTrash className={s.trash} onClick={() => onDelete(item.id)}/>
             </div>
         )
     }
 }
+
 export default Order
