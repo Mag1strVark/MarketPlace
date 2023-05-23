@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/static/css/main.7e29f915.css",
+    "main.css": "/static/css/main.35e13396.css",
     "main.js": "/static/js/main.83f13b60.js",
     "static/media/white_room.jpg": "/static/media/white_room.e91d97d59a7225bd05a4.jpg",
     "index.html": "/index.html",
-    "main.7e29f915.css.map": "/static/css/main.7e29f915.css.map",
+    "main.35e13396.css.map": "/static/css/main.35e13396.css.map",
     "main.83f13b60.js.map": "/static/js/main.83f13b60.js.map"
   },
   "entrypoints": [
-    "static/css/main.7e29f915.css",
+    "static/css/main.35e13396.css",
     "static/js/main.83f13b60.js"
   ]
 }
