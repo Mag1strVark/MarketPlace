@@ -17,7 +17,7 @@ const showOrders = (props) => {
                     totalPrice={totalPrice}
                 />
             ))}
-            <p className={s.summa}>Сумма: {totalPrice}$</p>
+            <p className={s.summa}>Total Price: {totalPrice}$</p>
         </div>
     );
 };
@@ -26,7 +26,7 @@ const showOrders = (props) => {
 const showNothing = () => {
     return (
         <div className={s.empty}>
-            <h2>Товаров нет</h2>
+            <h2>No Products</h2>
         </div>
     );
 };
