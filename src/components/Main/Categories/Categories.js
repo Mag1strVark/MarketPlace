@@ -7,7 +7,8 @@ class Categories extends Component {
         super(props)
         this.state = {
             categories: [],
-            sortOrder: 'asc'
+            sortOrder: 'asc',
+            activeCategory: 'all'
         }
     }
 
@@ -16,6 +17,11 @@ class Categories extends Component {
         this.setState({ sortOrder: newSortOrder }, () => {
             this.props.sortItemsByPrice(newSortOrder);
         });
+    }
+
+    chooseCategory = (categoryKey) => {
+        this.setState({ activeCategory: categoryKey })
+        this.props.chooseCategory(categoryKey)
     }
 
     componentDidMount() {
@@ -36,7 +42,13 @@ class Categories extends Component {
                 <input type="text" placeholder="Search products" className={s.searchInput} value={this.props.searchTerm} onChange={this.props.onSearchChange} />
                 <div className={s.categories}>
                     {this.state.categories.map(el => (
-                        <div className={s.categories_items} key={el.key} onClick={() => this.props.chooseCategory(el.key)}>{el.name}</div>
+                        <div
+                            className={`${s.categories_items} ${el.key === this.state.activeCategory ? s.categories_items_active : ''}`}
+                            key={el.key}
+                            onClick={() => this.chooseCategory(el.key)}
+                        >
+                            {el.name}
+                        </div>
                     ))}
                     <div className={s.categories_items} onClick={this.toggleSortOrder}>Sort Price {this.state.sortOrder === 'asc' ? '↓'  : '↑' }</div>
                 </div>

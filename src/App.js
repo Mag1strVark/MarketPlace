@@ -141,7 +141,13 @@ class App extends React.Component {
             items: updatedItems,
             fullItem: updatedFullItem
         }, () => {
-            this.filterItems();
+            let filteredItems = [];
+            if (this.state.currentCategory === 'favorite') {
+                filteredItems = updatedItems.filter(item => item.favorite);
+            } else {
+                filteredItems = updatedItems.filter(item => !this.state.currentCategory || item.category === this.state.currentCategory);
+            }
+            this.setState({ currentItems: filteredItems });
             this.saveStateToLocalStorage();
         });
     }

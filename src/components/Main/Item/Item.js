@@ -27,7 +27,7 @@ class Item extends Component {
             <div className={s.item} ref={this.itemRef}>
                 <img src={this.props.item.image} alt="icon" onClick={() => this.props.onShowItem(this.props.item)}/>
                 <h2>{this.props.item.title}</h2>
-                <p style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{description}</p>
+                <p className={s.description}>{description}</p>
                 <b>{this.props.item.price}$</b>
                 <div className={s.addToCart1} onClick={() => this.props.onAdd(this.props.item)}>+</div>
                 <div

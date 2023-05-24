@@ -24,6 +24,18 @@
     transition: 0.4s;
 }
 
+.categories_items_active{
+    display: flex;
+    flex-direction: row;
+    background: red;
+    border-radius: 50px;
+    color: white;
+    padding: 10px 20px;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: 0.4s;
+}
+
 .categories_items:hover{
     border-color: silver;
     background: red;

@@ -10,12 +10,14 @@ class Order extends Component {
     }
 
     handleDecrement = () => {
-        const { item, onUpdate } = this.props;
+        const { item, onUpdate, onDelete } = this.props;
         if (item.count === 1) {
+            onDelete(item.id);
             return;
         }
         onUpdate({...item, count: item.count - 1});
     }
+
 
     render() {
         const { item, onDelete } = this.props;
@@ -28,7 +30,7 @@ class Order extends Component {
                 <h2>{item.title}</h2>
                 <div className={s.counter}>
                     <FaMinus className={s.minus} onClick={this.handleDecrement}/>
-                    <span className={s.quantity}>{item.count}</span>
+                    <span>{item.count}</span>
                     <FaPlus className={s.plus} onClick={this.handleIncrement}/>
                 </div>
                 <b>{formattedPrice}</b>
